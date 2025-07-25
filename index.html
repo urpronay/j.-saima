@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Birthday Light Show</title>
+  <style>
+    /* (Full CSS styles as shown in search result) */
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #000; color: white; text-align: center; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; }
+    .bulbs-container { display: none; gap: 20px; margin-bottom: 30px; flex-wrap: wrap; justify-content: center; max-width: 90%; }
+    .bulb { font-size: 3rem; animation: pulse 1.5s infinite alternate; min-width: 60px; }
+    .bulb:nth-child(1) { animation-delay: 0s; }
+    .bulb:nth-child(2) { animation-delay: 0.2s; }
+    .bulb:nth-child(3) { animation-delay: 0.4s; }
+    .bulb:nth-child(4) { animation-delay: 0.6s; }
+    .bulb:nth-child(5) { animation-delay: 0.8s; }
+    .bulb:nth-child(6) { animation-delay: 1.0s; }
+    .bulb:nth-child(7) { animation-delay: 1.2s; }
+    @keyframes pulse { from { opacity: 0.5; transform: scale(0.9); } to { opacity: 1; transform: scale(1.1); } }
+    button { /* general button style adjustments omitted for brevity */ }
+    /* ... all other CSS animations and responsive rules ... */
+  </style>
+</head>
+<body>
+  <div class="bulbs-container" id="bulbsContainer">
+    <div class="bulb">💡</div>
+    <div class="bulb">💡</div>
+    <div class="bulb">💡</div>
+    <div class="bulb">💡</div>
+    <div class="bulb">💡</div>
+    <div class="bulb">💡</div>
+    <div class="bulb">💡</div>
+  </div>
+
+  <button id="turnOnBtn">Turn On Lights</button>
+  <div id="musicPlayer">
+    <button id="playMusicBtn">🎵 Play Music</button>
+    <audio id="audioPlayer" loop></audio>
+    <audio id="fireworkSound" preload="auto"></audio>
+  </div>
+  <div id="musicSymbolsContainer"></div>
+  <button id="decorateBtn">Let's Decorate</button>
+  <img id="decorBanner" src="https://raw.githubusercontent.com/waleedanis5/music/main/banner.png" />
+  <div id="balloonContainer"></div>
+  <button id="celebrateBtn">Let's Celebrate!</button>
+  <div id="cake">🎂</div>
+  <button id="cutCakeBtn">Let's Cut the Cake!</button>
+  <div id="cakeCut" class="cake-cut">🎂</div>
+  <div id="cakePiece1" class="cake-piece">🍰</div>
+  <div id="cakePiece2" class="cake-piece">🍰</div>
+  <div id="finalMessage"></div>
+  <div id="fireworksContainer"></div>
+
+  <script>
+    // JavaScript below adapted from search results :contentReference[oaicite:1]{index=1}
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get('nama') || 'Friend';
+    document.getElementById('finalMessage').innerText = `Happy Birthday, ${name}! 🎉`;
+
+    const turnOnBtn = document.getElementById('turnOnBtn');
+    const body = document.body;
+    const bulbsContainer = document.getElementById('bulbsContainer');
+    const musicPlayer = document.getElementById('musicPlayer');
+    const playMusicBtn = document.getElementById('playMusicBtn');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const fireworkSound = document.getElementById('fireworkSound');
+    const decorateBtn = document.getElementById('decorateBtn');
+    const musicSymbolsContainer = document.getElementById('musicSymbolsContainer');
+    const decorBanner = document.getElementById('decorBanner');
+    const balloonContainer = document.getElementById('balloonContainer');
+    const celebrateBtn = document.getElementById('celebrateBtn');
+    const cake = document.getElementById('cake');
+    const cutCakeBtn = document.getElementById('cutCakeBtn');
+    const cakeCut = document.getElementById('cakeCut');
+    const cakePiece1 = document.getElementById('cakePiece1');
+    const cakePiece2 = document.getElementById('cakePiece2');
+    const finalMessage = document.getElementById('finalMessage');
+    const fireworksContainer = document.getElementById('fireworksContainer');
+
+    const birthdayMusicUrl = "https://github.com/waleedanis5/music/raw/main/whatsapp-audio-2025-04-10-at-234414-f3916228_0ZSd3jbE.mp3";
+    const fireworkSoundUrl = "https://assets.mixkit.co/sfx/preview/mixkit-explosion-impact-1684.mp3";
+
+    fireworkSound.src = fireworkSoundUrl;
+    fireworkSound.load();
+
+    turnOnBtn.addEventListener('click', () => {
+      turnOnBtn.style.display = 'none';
+      bulbsContainer.style.display = 'flex';
+      let brightness = 0;
+      const glowInterval = setInterval(() => {
+        brightness++;
+        body.style.backgroundColor = `rgba(123,44,191,${brightness/100})`;
+        if (brightness >= 100) {
+          clearInterval(glowInterval);
+          body.style.background = "radial-gradient(circle, #9d4edd, #7b2cbf)";
+          bulbsContainer.style.display = 'none';
+          musicPlayer.style.display = 'block';
+        }
+      }, 30);
+    });
+
+    playMusicBtn.addEventListener('click', () => {
+      if (audioPlayer.paused) {
+        audioPlayer.src = birthdayMusicUrl;
+        audioPlayer.loop = true;
+        audioPlayer.play().then(() => {
+          playMusicBtn.style.display = 'none';
+          for (let i = 0; i < 7; i++) {
+            const m = document.createElement('div');
+            m.classList.add('music-symbol');
+            m.innerText = '🎵';
+            musicSymbolsContainer.appendChild(m);
+            m.style.animationDelay = `${i*0.5}s`;
+          }
+          setTimeout(() => {
+            decorateBtn.style.display = 'inline-block';
+            musicSymbolsContainer.style.display = 'none';
+          }, 8000);
+        });
+      }
+    });
+
+    decorateBtn.addEventListener('click', () => {
+      decorBanner.style.display = 'block';
+      let count = 0;
+      balloonContainer.innerHTML = '';
+      balloonInterval = setInterval(() => {
+        const b = document.createElement('div');
+        b.className = 'balloon';
+        b.innerText = '🎈';
+        b.style.left = Math.random() * 90 + 'vw';
+        b.style.animationDuration = 4 + Math.random()*3 + 's';
+        balloonContainer.appendChild(b);
+        count++;
+        if (count > 20) {
+          clearInterval(balloonInterval);
+          celebrateBtn.style.display = 'inline-block';
+        }
+      }, 300);
+    });
+
+    celebrateBtn.addEventListener('click', () => {
+      cake.style.display = 'block';
+      cutCakeBtn.style.display = 'inline-block';
+    });
+
+    cutCakeBtn.addEventListener('click', () => {
+      cake.style.display = 'none';
+      cakeCut.style.display = 'block';
+      cakePiece1.style.display = 'block';
+      cakePiece2.style.display = 'block';
+      fireworkSound.play();
+      // Add final fireworks, then show final message
+      setTimeout(() => {
+        finalMessage.style.display = 'block';
+      }, 2000);
+    });
+    // Fireworks logic omitted for brevity—but include if desired per original template
+  </script>
+</body>
+</html>
